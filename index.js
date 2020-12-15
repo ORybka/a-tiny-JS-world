@@ -6,62 +6,56 @@
    */
 
 // ======== OBJECTS DEFINITIONS ========
-const man = {
-  species: 'human',
-  name: 'John',
-  gender: 'male',
-  legs: 2,
-  hands: 2,
-  saying: "Hey! What's up?",
-  friends: ['Mary', 'Marley', 'Tisha'],
-};
+class Inhabitant {
+  constructor(species, name, gender, legs, hands, saying, friends) {
+    this.species = species;
+    this.name = name;
+    this.gender = gender;
+    this.legs = legs;
+    this.hands = hands;
+    this.saying = saying;
+    this.friends = friends;
+  }
 
-const woman = {
-  species: 'human',
-  name: 'Mary',
-  gender: 'female',
-  legs: 2,
-  hands: 2,
-  saying: 'Hey there!',
-  friends: ['John', 'Marley', 'Tisha'],
-};
+  callFriends() {
+    return this.friends.join(', ');
+  }
 
-const dog = {
-  species: 'dog',
-  name: 'Marley',
-  gender: 'male',
-  legs: 4,
-  hands: 0,
-  saying: 'woof-woof!',
-  friends: ['John', 'Mary', 'Selina'],
-};
+  getValues() {
+    return [this.species, `<strong>${this.name}</strong>`, this.gender, this.legs, this.hands, `<em>${this.saying}</em>`, this.callFriends()];
+  }
 
-const cat = {
-  species: 'cat',
-  name: 'Tisha',
-  gender: 'male',
-  legs: 4,
-  hands: 0,
-  saying: 'meow-purr!',
-  friends: [],
-};
+  printValues() {
+    return this.getValues().join('; ');
+  }
+}
 
-const catWoman = {
-  species: 'catWoman',
-  name: 'Selina',
-  gender: 'female',
-  legs: 2,
-  hands: 2,
-  saying: cat.saying,
-  friends: ['Tisha'],
-};
+class Human extends Inhabitant {
+  constructor(name, gender, saying, friends) {
+    super('human', name, gender, 2, 2, saying, friends);
+  }
+}
+
+const man = new Human('John', 'male', "Hey! What's up?", ['Mary', 'Marley', 'Tisha']);
+const woman = new Human('Mary', 'female', 'Hey there!', ['John', 'Marley', 'Tisha']);
+
+class Animal extends Inhabitant {
+  constructor(species, name, gender, saying, friends) {
+    super(species, name, gender, 4, 0, saying, friends);
+  }
+}
+
+const dog = new Animal('dog', 'Marley', 'male', 'woof-woof!', ['John', 'Mary', 'Selina']);
+const cat = new Animal('cat', 'Tisha', 'male', 'meow-purr!', []);
+
+class CatWoman extends Inhabitant {
+  constructor(name, gender, friends) {
+    super('catWoman', name, gender, 2, 2, cat.saying, friends);
+  }
+}
+
+const catWoman = new CatWoman('Selina', 'female', ['Tisha']);
 
 // ======== OUTPUT ========
 
-const objects = [man, woman, dog, cat, catWoman];
-
-objects.forEach((el) => {
-  const objFriends = el.friends.join(', ');
-  const objValues = [el.species, `<strong>${el.name}</strong>`, el.gender, el.legs, el.hands, `<em>${el.saying}</em>`, objFriends];
-  print(objValues.join('; '), 'div');
-});
+[man, woman, dog, cat, catWoman].forEach((el) => print(el.printValues(), 'div'));
